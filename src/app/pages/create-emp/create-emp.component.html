@@ -1,29 +1,13 @@
-<!-- <div class="create-emp-main" >
-    <form #form="ngForm">
-        <mat-form-field class="name" appearance="fill">
-          <mat-label>Employee Name</mat-label>
-          <input matInput [(ngModel)]="empName" name="name" required>
-        </mat-form-field>
-   
-        <button mat-raised-button class="role" appearance="fill" (click)="openBottomSheet()">
-       
-          <span class="material-icons">
-            work_outline
-            </span>
-            <span class="button-caption">Select Role</span>
-        
-             <span class="material-icons" style="right:0">
-                arrow_drop_down
-                </span>
-          </button>
-
-
-
-    
-      </form>
-      
-</div> -->
-
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>{{pageTitle}}</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="deleteEmp()" *ngIf="empObjectToEdit">
+                <ion-icon class="trash" name="trash"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
 <ion-content class="ion-padding">
     <form #form="ngForm">
         <ion-item>
@@ -38,103 +22,111 @@
             <ion-item>
                 <ion-icon slot="start" name="bag-outline"></ion-icon>
                 <ion-select placeholder="Select role" [(ngModel)]="selectedRole" name="role" interface="action-sheet">
-                    <ion-select-option value="desinger">Product Designer</ion-select-option>
-                    <ion-select-option value="developer">Flutter Developer</ion-select-option>
-                    <ion-select-option value="tester">QA Tester</ion-select-option>
-                    <ion-select-option value="owner">Product Owner</ion-select-option>
+                    <ion-select-option value="Product Designer">Product Designer</ion-select-option>
+                    <ion-select-option value="Flutter Developer">Flutter Developer</ion-select-option>
+                    <ion-select-option value="QA Tester">QA Tester</ion-select-option>
+                    <ion-select-option value="Product Owner">Product Owner</ion-select-option>
                 </ion-select>
             </ion-item>
         </ion-list>
 
-      
+        <ion-item>
+            <ion-icon slot="start" name="time-outline"></ion-icon>
+            <ion-label>Duration</ion-label>
+        </ion-item>
 
         <ion-item>
-        
+
             <ion-label>From Date</ion-label>
-            <ion-datetime-button datetime="datetime" ></ion-datetime-button>
+            <ion-datetime-button datetime="datetime"></ion-datetime-button>
+            <ion-icon class="arrow" name="arrow-forward"></ion-icon>
             <ion-label>To Date</ion-label>
-            <ion-datetime-button datetime="datetime1" ></ion-datetime-button>
-            
+            <ion-datetime-button datetime="datetime1"></ion-datetime-button>
+
             <ion-modal [keepContentsMounted]="true">
-                
-            <ng-template >
-              
-                <ion-toolbar>
-               
-                    <ion-grid>
-                        <ion-row>
-                          <ion-col>
-                            <ion-button expand="full" (click)="setTodayFromModal()">Today</ion-button>
-                          </ion-col>
-                          <ion-col>
-                            <ion-button expand="full" (click)="nextOneDayFromModal()">Next {{nextOneDayBtnCaptionFromModal}}</ion-button>
-                          </ion-col>
-                        </ion-row>
-                        <ion-row>
-                          <ion-col>
-                            <ion-button expand="full" (click)="nextTwoDayFromModal()">Next {{nextTwoDayBtnCaptionFromModal}}</ion-button>
-                          </ion-col>
-                          <ion-col>
-                            <ion-button expand="full" (click)="laterWeekFromModal()">After 1 Week</ion-button>
-                          </ion-col>
-                        </ion-row>
-                      </ion-grid>
-                  </ion-toolbar>
-                  <ion-datetime    id="datetime"  presentation="date" [(ngModel)]="selectedFromDate" name="date" (ionChange)="onFromDateChanged($event)">
-                  
-                  </ion-datetime>
-                  <ion-toolbar>
-                   
-                    <ion-label slot="start">
-                        {{selectedFromDate  | date: 'dd MMM yyyy'}}
-                    </ion-label>
-                    <ion-buttons slot="end">
-                      <ion-button (click)="closeFromModal()">Close</ion-button>
-                      <ion-button (click)="saveFromDate()">Save</ion-button>
-                     
-                    </ion-buttons>
-                  </ion-toolbar>
-              </ng-template>
-            </ion-modal>
-            
-            <ion-modal [keepContentsMounted]="true">
-                
-                <ng-template >
-                  
+
+                <ng-template>
+
                     <ion-toolbar>
-                   
+
                         <ion-grid>
                             <ion-row>
-                              <ion-col>
-                                <ion-button expand="full" (click)="setToDateNull()">No date</ion-button>
-                              </ion-col>
-                              <ion-col>
-                                <ion-button expand="full" (click)="setTodayToModal()">Today</ion-button>
-                              </ion-col>
+                                <ion-col>
+                                    <ion-button expand="full" (click)="setTodayFromModal()">Today</ion-button>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-button expand="full" (click)="nextOneDayFromModal()">Next
+                                        {{nextOneDayBtnCaptionFromModal}}</ion-button>
+                                </ion-col>
                             </ion-row>
-                           
-                          </ion-grid>
-                      </ion-toolbar>
-                      <ion-datetime id="datetime1"  presentation="date" [(ngModel)]="selectedToDate" name="date1" (ionChange)="onToDateChanged($event)">
-                      
-                      </ion-datetime>
-                      <ion-toolbar>
-                       
+                            <ion-row>
+                                <ion-col>
+                                    <ion-button expand="full" (click)="nextTwoDayFromModal()">Next
+                                        {{nextTwoDayBtnCaptionFromModal}}</ion-button>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-button expand="full" (click)="laterWeekFromModal()">After 1 Week</ion-button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </ion-toolbar>
+                    <ion-datetime id="datetime" presentation="date" [(ngModel)]="selectedFromDate" name="date"
+                        (ionChange)="onFromDateChanged($event)">
+
+                    </ion-datetime>
+                    <ion-toolbar>
+
+                        <ion-label slot="start">
+                            {{selectedFromDate | date: 'dd MMM yyyy'}}
+                        </ion-label>
+                        <ion-buttons slot="end">
+                            <ion-button (click)="closeFromModal()">Close</ion-button>
+                            <ion-button (click)="saveFromDate()">Save</ion-button>
+
+                        </ion-buttons>
+                    </ion-toolbar>
+                </ng-template>
+            </ion-modal>
+
+            <ion-modal [keepContentsMounted]="true">
+
+                <ng-template>
+
+                    <ion-toolbar>
+
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col>
+                                    <ion-button expand="full" (click)="setToDateNull()">No date</ion-button>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-button expand="full" (click)="setTodayToModal()">Today</ion-button>
+                                </ion-col>
+                            </ion-row>
+
+                        </ion-grid>
+                    </ion-toolbar>
+                    <ion-datetime id="datetime1" presentation="date" [(ngModel)]="selectedToDate" name="date1"
+                        (ionChange)="onToDateChanged($event)">
+
+                    </ion-datetime>
+                    <ion-toolbar>
+
                         <ion-label slot="start" *ngIf="selectedToDate">
-                            {{selectedToDate  | date: 'dd MMM yyyy'}}
+                            {{selectedToDate | date: 'dd MMM yyyy'}}
                         </ion-label>
                         <ion-label slot="start" *ngIf="selectedToDate == null">
                             No Date.
                         </ion-label>
                         <ion-buttons slot="end">
-                          <ion-button (click)="closeToModal()">Close</ion-button>
-                          <ion-button (click)="saveToDate()">Save</ion-button>
-                         
+                            <ion-button (click)="closeToModal()">Close</ion-button>
+                            <ion-button (click)="saveToDate()">Save</ion-button>
+
                         </ion-buttons>
-                      </ion-toolbar>
-                  </ng-template>
-                </ion-modal>
-         
+                    </ion-toolbar>
+                </ng-template>
+            </ion-modal>
+
 
         </ion-item>
     </form>
@@ -142,8 +134,8 @@
 <ion-footer>
     <ion-toolbar>
         <ion-buttons slot="end">
-          <ion-button (click)="goBack()">Cancel</ion-button>
-          <ion-button color="primary" (click)="saveData()" >Save</ion-button>
+            <ion-button (click)="goBack()">Cancel</ion-button>
+            <ion-button color="primary" (click)="saveData()">Save</ion-button>
         </ion-buttons>
-      </ion-toolbar>
+    </ion-toolbar>
 </ion-footer>

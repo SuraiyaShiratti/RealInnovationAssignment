@@ -14,7 +14,7 @@ export class IndexDbService {
   private async initDb() {
     this.db = await openDB('EmployeeDB', 1, {
       upgrade(db) {
-        db.createObjectStore('emp-store', { keyPath: 'name' }); // Use your unique identifier
+        db.createObjectStore('emp-store', { keyPath: 'id', autoIncrement: true });
       },
     });
   }
@@ -30,9 +30,9 @@ export class IndexDbService {
     await this.db.put('emp-store', data);
   }
 
-  async getData(name: string) {
+  async getData(id: number) {
     await this.ensureDbInitialized();
-    return await this.db.get('emp-store', name);
+    return await this.db.get('emp-store', id);
   }
 
   async getAllData() {
@@ -40,8 +40,8 @@ export class IndexDbService {
     return await this.db.getAll('emp-store');
   }
 
-  async deleteData(name: string) {
+  async deleteData(id: number) {
     await this.ensureDbInitialized();
-    await this.db.delete('emp-store', name);
+    await this.db.delete('emp-store', id);
   }
 }

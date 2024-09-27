@@ -21,11 +21,23 @@ export class CreateEmpComponent {
   nextOneDayDateFromModal :any
   nextTwoDayDateFromModal :any;
   laterWeekDateFromModal :any;
-
+  isEmpEdit: boolean =false;
+  pageTitle:any = "Add Employee Details"
+  empObjectToEdit :any;
  
   
   constructor (private router: Router, public global: GlobalService,private modalController: ModalController, private location: Location
   ,private indexedDbService: IndexDbService){
+    let param = this.router.getCurrentNavigation()!.extras.state;
+    if(param && param['data']){
+      this.pageTitle = "Edit Employee Details";
+      this.empObjectToEdit = param['data'];
+      this.empName = param['data'].name;
+      this.selectedRole = param['data'].role;
+      this.selectedFromDate = param['data'].fromDate;
+      this.selectedToDate = param['data'].toDate;
+
+    }
     
   }
   ngOnInit(){
@@ -33,8 +45,11 @@ export class CreateEmpComponent {
 
     const today = new Date();
     console.log("today", today)
-     this.selectedFromDate=today.toISOString();;
-    this.selectedToDate=today.toISOString(); 
+    if(!this.empObjectToEdit){
+      this.selectedFromDate=today.toISOString();;
+      this.selectedToDate=today.toISOString(); 
+    }
+    
 
     this.nextOneDayBtnCaptionFromModal = this.getDayOfWeek(today.getDay());
     this.nextTwoDayBtnCaptionFromModal = this.getDayOfWeek(today.getDay()+1)
@@ -61,7 +76,7 @@ export class CreateEmpComponent {
   this.modalController.dismiss();
   }
   setTodayFromModal(){
-    this.selectedFromDate = new Date();
+    this.selectedFromDate = new Date().toISOString();
   }
   nextOneDayFromModal(){
     this.selectedFromDate =  new Date(this.nextOneDayDateFromModal).toISOString();
@@ -78,10 +93,10 @@ export class CreateEmpComponent {
 
 
   setTodayToModal(){
-    this.selectedToDate = new Date();
+    this.selectedToDate = new Date().toISOString();
   }
   setToDateNull(){
-    this.selectedToDate = null;
+    this.selectedToDate = "None";
   }
 
   onFromDateChanged(event: any) {
@@ -98,6 +113,7 @@ export class CreateEmpComponent {
   }
 
   onToDateChanged(event: any) {
+    console.log("onTODateChanged",event.detail.value)
     this.selectedToDate = new Date(event.detail.value); // Handle the selected date
 
   
@@ -114,11 +130,14 @@ export class CreateEmpComponent {
 
   saveFromDate(){
     console.log("from date",this.selectedFromDate)
+    this.selectedFromDate = this.selectedFromDate.toISOString();
     this.modalController.dismiss();
 
   }
   saveToDate(){
     console.log("To date",this.selectedToDate)
+    if(this.selectedToDate)  this.selectedToDate = this.selectedToDate.toISOString();
+   
     this.modalController.dismiss();
 
   }
@@ -132,13 +151,22 @@ export class CreateEmpComponent {
     console.log("role", this.selectedRole);
     console.log("from date", this.selectedFromDate);
     console.log("to date",this.selectedToDate)
+    if(this.empObjectToEdit){ //edit action
+      let dataToSave = { id:this.empObjectToEdit.id, name:  this.empName, role: this.selectedRole, fromDate:this.selectedFromDate, toDate:this.selectedToDate };
+      this.indexedDbService.saveData(dataToSave).then(() => {
+        console.log('Data updated successfully');
+        this.location.back(); 
+      });
+    }else{
+      let dataToSave = {  name:  this.empName, role: this.selectedRole, fromDate:this.selectedFromDate, toDate:this.selectedToDate };
+      this.indexedDbService.saveData(dataToSave).then(() => {
+        console.log('Data saved successfully');
+        this.location.back(); 
+      });
+    }
+  
 
-   let dataToSave = {  name:  this.empName, role: this.selectedRole, fromDate:this.selectedFromDate, toDate:this.selectedToDate };
-    this.indexedDbService.saveData(dataToSave).then(() => {
-      console.log('Data saved successfully');
-    });
-
-    this.fetchAllData();
+   // this.fetchAllData();
   }
 
 /*   fetchData() {
@@ -151,6 +179,13 @@ export class CreateEmpComponent {
     this.indexedDbService.getAllData().then(data => {
       console.log('All data:', data);
     });
+  }
+
+  deleteEmp(){
+    this.indexedDbService.deleteData(this.empObjectToEdit.id).then(data => {
+      console.log("data AFTER delete", data);
+      this.location.back(); 
+     });
   }
 
 

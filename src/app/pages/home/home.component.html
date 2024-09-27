@@ -1,4 +1,9 @@
-
+<ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Employee List</ion-title>
+    
+    </ion-toolbar >
+  </ion-header>
 <ion-content class="ion-padding">
     <p *ngIf="!empData">No Data found!</p>
 
@@ -13,7 +18,7 @@
                     No Employee found
                 </ion-item>
                 <ion-item-sliding *ngFor="let employee of filteredEmpDataWithoutDate()">
-                    <ion-item >
+                    <ion-item (click)="gotoEditEmp(employee)">
                         <ion-label>
                             <h2>{{ employee.name }}</h2>
                             <h3>{{ employee.role }}</h3>
@@ -40,7 +45,7 @@
                     No Employee found
                 </ion-item>
                 <ion-item-sliding *ngFor="let employee of filteredEmpDataWithDate()">
-                <ion-item>
+                <ion-item (click)="gotoEditEmp(employee)">
                     <ion-label>
                         <h2>{{ employee.name }}</h2>
                         <h3>{{ employee.role }}</h3>

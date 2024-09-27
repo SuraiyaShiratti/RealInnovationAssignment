@@ -43,7 +43,9 @@ export class HomeComponent {
   }
 
   deleteEmp(employee:any){
-    this.indexedDbService.deleteData(employee.name).then(data => {
+    
+
+    this.indexedDbService.deleteData(employee.id).then(data => {
      console.log("data AFTER delete", data)
 
      this.empData.update(employees => employees.filter(emp => emp.name !== employee.name));
@@ -54,6 +56,11 @@ export class HomeComponent {
       this.filteredEmpDataWithoutDate.update(employees => employees.filter(emp => emp.name !== employee.name)); 
      }
     });
+  }
+
+  gotoEditEmp(employeeObj:any){
+    //this.router.navigate(['/create-emp']); 
+    this.router.navigate(['/create-emp'], { state: { data:employeeObj } });
   }
 
 }
