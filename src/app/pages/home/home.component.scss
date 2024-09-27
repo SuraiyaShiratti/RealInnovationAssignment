@@ -1,0 +1,17 @@
+
+ion-content {
+    height: 95%; 
+  
+  }
+
+  
+  ion-footer{
+    position: fixed; 
+    bottom: 0; 
+    left: 0;
+    right: 0;
+    z-index: 10;
+  }
+  ion-toolbar{
+    padding : 0 25px;
+  }

@@ -1,0 +1,72 @@
+
+<ion-content class="ion-padding">
+    <p *ngIf="!empData">No Data found!</p>
+
+    <div *ngIf="empData">
+
+        <ion-list>
+            <ion-item-group>
+                <ion-item-divider>
+                    <ion-label color="primary"> Current Employees </ion-label>
+                </ion-item-divider>
+                <ion-item *ngIf="filteredEmpDataWithoutDate().length == 0">
+                    No Employee found
+                </ion-item>
+                <ion-item-sliding *ngFor="let employee of filteredEmpDataWithoutDate()">
+                    <ion-item >
+                        <ion-label>
+                            <h2>{{ employee.name }}</h2>
+                            <h3>{{ employee.role }}</h3>
+                            <p>
+                                {{ employee.fromDate | date: 'dd MMM yyyy' }}
+                            </p>
+                        </ion-label>
+                    </ion-item>
+                    <ion-item-options>
+                        <ion-item-option color="danger" (click)="deleteEmp(employee)">Delete</ion-item-option>
+                    </ion-item-options>
+                </ion-item-sliding>
+            </ion-item-group>
+        </ion-list>
+    </div>
+    <div>
+
+        <ion-list>
+            <ion-item-group>
+                <ion-item-divider>
+                    <ion-label color="primary"> Previous Employees </ion-label>
+                </ion-item-divider>
+                <ion-item *ngIf="filteredEmpDataWithDate().length == 0">
+                    No Employee found
+                </ion-item>
+                <ion-item-sliding *ngFor="let employee of filteredEmpDataWithDate()">
+                <ion-item>
+                    <ion-label>
+                        <h2>{{ employee.name }}</h2>
+                        <h3>{{ employee.role }}</h3>
+                        <p>
+                            {{ employee.fromDate | date: 'dd MMM yyyy' }} - {{ employee.toDate | date: 'dd MMM yyyy' }}
+                        </p>
+                    </ion-label>
+                </ion-item>
+                <ion-item-options>
+                    <ion-item-option color="danger"  (click)="deleteEmp(employee)">Delete</ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+           
+            </ion-item-group>
+        </ion-list>
+    </div>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="gotoCreateEmp()">
+        <ion-fab-button>
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>
+<ion-footer *ngIf="filteredEmpDataWithoutDate().length >0 || filteredEmpDataWithDate().length >0">
+
+    <ion-toolbar>
+        Swipe Left to delete
+    </ion-toolbar>
+
+</ion-footer>

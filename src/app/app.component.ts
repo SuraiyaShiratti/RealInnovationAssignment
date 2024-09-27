@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { GlobalService } from './services/global.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'real-innovation-poc';
+  pageheader :any;
+  constructor (private router: Router, public global: GlobalService){
+    
+  }
+
+  ngOnInit(){
+  
+  }
 }
