@@ -96,7 +96,7 @@ export class CreateEmpComponent {
     this.selectedToDate = new Date().toISOString();
   }
   setToDateNull(){
-    this.selectedToDate = "None";
+    this.selectedToDate = null;
   }
 
   onFromDateChanged(event: any) {
@@ -130,13 +130,13 @@ export class CreateEmpComponent {
 
   saveFromDate(){
     console.log("from date",this.selectedFromDate)
-    this.selectedFromDate = this.selectedFromDate.toISOString();
+    this.selectedFromDate = new Date(this.selectedFromDate).toISOString();
     this.modalController.dismiss();
 
   }
   saveToDate(){
     console.log("To date",this.selectedToDate)
-    if(this.selectedToDate)  this.selectedToDate = this.selectedToDate.toISOString();
+    if(this.selectedToDate)  this.selectedToDate = new Date(this.selectedToDate).toISOString();
    
     this.modalController.dismiss();
 

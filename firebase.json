@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "dist/real-innovation-poc",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
